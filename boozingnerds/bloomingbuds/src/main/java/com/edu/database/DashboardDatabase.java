@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import com.edu.model.LoginData;
 import com.edu.model.MyDashboardData;
 import com.edu.model.MyHomeWorKData;
+import com.edu.model.MyNoticeData;
 
 /**
  * @author bikash.rajguru
@@ -23,9 +24,10 @@ public class DashboardDatabase {
 		PreparedStatement ps=null;
 		int loginID=login.getLoginId();
 		ResultSet rs=null;
-		int student_ID,class_ID;
+		int student_ID,class_ID,notice_ID;
 		MyDashboardData dashboardDataObject=new MyDashboardData();
 		MyHomeWorKData homeworkData=new MyHomeWorKData();
+		MyNoticeData noticeData=new MyNoticeData();
 		
 		try{
 			
@@ -38,10 +40,16 @@ public class DashboardDatabase {
         System.out.println("Check point 2");
         student_ID=Integer.parseInt(rs.getString(1));
         class_ID=Integer.parseInt(rs.getString(3));
-        System.out.println("Student iD " +student_ID + " Class ID = " + class_ID);
+        notice_ID=Integer.parseInt(rs.getString(4));
+        System.out.println("Student iD " +student_ID + " Class ID = " + class_ID + "Notice_ID= "+ notice_ID);
         homeworkData=getDbHomeWorkDetails(con, class_ID);
+        noticeData=getDbNoticeDetails(con, notice_ID);
+
         dashboardDataObject.setClass_ID(class_ID);
         dashboardDataObject.setHomeworkData(homeworkData);
+        dashboardDataObject.setNoticeData(noticeData);
+        
+        
 		}
 		catch(Exception e){
 			
@@ -69,12 +77,37 @@ public class DashboardDatabase {
         rs.next();
         homework_details=rs.getString(3);
         homeworkDataObj.setHomework_details(homework_details);
+        homeworkDataObj.setHomework_id(homework_id);
 		}
 		catch(Exception e){
 			
 		}
 		
 		return homeworkDataObj;
+	}
+	
+	public MyNoticeData getDbNoticeDetails(Connection con,int notice_id){
+		
+		MyNoticeData noticedata=new MyNoticeData();
+		PreparedStatement ps=null;
+		ResultSet rs=null;
+		String notice_Details;
+		
+		try {
+			ps = con.prepareStatement("select * from notice_table where notice_id = ?");
+	        ps.setInt(1,notice_id);
+	        rs=ps.executeQuery();
+	        rs.next();
+	        System.out.println("Notice id here = "+ notice_id);
+	        notice_Details=rs.getString(2);
+	        noticedata.setMyNotice_id(notice_id);
+	        noticedata.setNotice_details(notice_Details);
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return noticedata;
+		
 	}
 
 }

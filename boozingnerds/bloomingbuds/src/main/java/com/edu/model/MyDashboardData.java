@@ -10,6 +10,15 @@ package com.edu.model;
 public class MyDashboardData {
 	
 int class_ID;	
+MyHomeWorKData homeworkData;
+MyNoticeData noticeData;
+
+public MyNoticeData getNoticeData() {
+	return noticeData;
+}
+public void setNoticeData(MyNoticeData noticeData) {
+	this.noticeData = noticeData;
+}
 public int getClass_ID() {
 	return class_ID;
 }
@@ -22,6 +31,6 @@ public MyHomeWorKData getHomeworkData() {
 public void setHomeworkData(MyHomeWorKData homeworkData) {
 	this.homeworkData = homeworkData;
 }
-MyHomeWorKData homeworkData;
+
 
 }
